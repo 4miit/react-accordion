@@ -1,40 +1,45 @@
-//single selection
-//multiple selection
-
 import { useState } from "react";
-import data from "./data.ts";
+import data from "./data";
 import "./index.css";
 
-export default function Accordian() {
-  const [selected, setSelected] = useState(null);
-  const [enableMultiSelection, setEnableMultiSelection] = useState(false);
-  const [multiple, setMultiple] = useState([]);
+interface DataItem {
+  id: string;
+  question: string;
+  answer: string;
+}
 
-  function handleSingleSelection(getCurrentId) {
+interface data {
+  data: DataItem[];
+}
+
+export default function Accordion() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const [enableMultiSelection, setEnableMultiSelection] = useState<boolean>(false);
+  const [multiple, setMultiple] = useState<string[]>([]);
+
+  function handleSingleSelection(getCurrentId: string) {
     setSelected(getCurrentId === selected ? null : getCurrentId);
   }
 
-  function handleMultiSelection(getCurrentId) {
-    let cpyMutiple = [...multiple];
-    const findIndexOfCurrentId = cpyMutiple.indexOf(getCurrentId);
+  function handleMultiSelection(getCurrentId: string) {
+    let cpyMultiple = [...multiple];
+    const findIndexOfCurrentId = cpyMultiple.indexOf(getCurrentId);
 
-    console.log(findIndexOfCurrentId);
-    if (findIndexOfCurrentId === -1) cpyMutiple.push(getCurrentId);
-    else cpyMutiple.splice(findIndexOfCurrentId, 1);
+    if (findIndexOfCurrentId === -1) cpyMultiple.push(getCurrentId);
+    else cpyMultiple.splice(findIndexOfCurrentId, 1);
 
-    setMultiple(cpyMutiple);
+    setMultiple(cpyMultiple);
   }
 
-  console.log(selected, multiple);
   return (
     <div className="acc-wrapper">
       <button onClick={() => setEnableMultiSelection(!enableMultiSelection)}>
         Enable Multi Selection
       </button>
-      <div className="accordian">
+      <div className="accordion">
         {data && data.length > 0 ? (
-          data.map((dataItem) => (
-            <div className="item">
+          data.map((dataItem: DataItem) => (
+            <div className="item" key={dataItem.id}>
               <div
                 onClick={
                   enableMultiSelection
@@ -48,19 +53,15 @@ export default function Accordian() {
               </div>
               {enableMultiSelection
                 ? multiple.indexOf(dataItem.id) !== -1 && (
-                    <div className="acc-content ">{dataItem.answer}</div>
+                    <div className="acc-content">{dataItem.answer}</div>
                   )
                 : selected === dataItem.id && (
-                    <div className="acc-content ">{dataItem.answer}</div>
+                    <div className="acc-content">{dataItem.answer}</div>
                   )}
-              {/* {selected === dataItem.id ||
-              multiple.indexOf(dataItem.id) !== -1 ? (
-                <div className="content">{dataItem.answer}</div>
-              ) : null} */}
             </div>
           ))
         ) : (
-          <div>No data found !</div>
+          <div>No data found!</div>
         )}
       </div>
     </div>
