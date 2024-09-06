@@ -3,7 +3,7 @@
 
 
 
-## `Project link :-` https://react-accordion-b9wiwujoy-amit-kumars-projects-d761c49e.vercel.app/
+## `Project link :-` https://react-accordion-jade.vercel.app/
 
 
 
